@@ -17,6 +17,36 @@ Additionally it adds some context to the current behaviour of assigning the mode
 
 ## Detailed design
 
+Currently if a developer wants to assign a custom name for the routes model value in the controller they must do this:
+
+```
+app/routes/posts.js
+import Route from '@ember/routing/route';
+
+export default Route.extend({
+  model() {
+    return this.store.findAll('post');
+  },
+  setupController(model, controller){
+    controller.set('articles', model);
+  }
+});
+```
+
+This RFC proposes a  solution like this:
+
+```
+app/routes/posts.js
+import Route from '@ember/routing/route';
+
+export default Route.extend({
+  model() {
+    return this.store.findAll('post');
+  },
+  modelName: articles
+});
+```
+
 - Add a property called `modelName` to the Route API. When the controller is initialised, the return value from the routes `model()` hook is assigned to the controller with value of the `modelName` property as the key.
 - This change would not require us to stop assigning the return value to `model` key on the controller as well.
 - Generator could be updated so that `ember generate route foo` would add `modelName: foo` to the generated route file.
