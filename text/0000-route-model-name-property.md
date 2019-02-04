@@ -91,6 +91,21 @@ Increases the size of the API.
 
 > What other designs have been considered? What is the impact of not doing this?
 
+We currently have a way of doing this:
+```
+app/routes/posts.js
+import Route from '@ember/routing/route';
+
+export default Route.extend({
+  model() {
+    return this.store.findAll('post');
+  },
+  setupController(model, controller){
+    controller.set('customModelName', model);
+  }
+});
+```
+
 I thought about using decorators, but I'm unsure if that would even be feasible.
 
 I opened this PR to get feedback and hear other alternatives.
